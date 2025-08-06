@@ -1,0 +1,27 @@
+name: Auto Commit
+permissions:
+  contents: write
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Oscar Atef Granada Aboultaif"
+          git config --global user.email "atefaboultaif@protonmail.com"
+
+      - name: Commit and Push
+        run: |
+          timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+          git commit --allow-empty -m "$timestamp"
+          git push
